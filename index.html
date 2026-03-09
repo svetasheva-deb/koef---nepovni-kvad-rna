@@ -9,7 +9,7 @@
             font-family: 'Segoe UI', sans-serif; 
             text-align: center; 
             background-color: #87CEEB; 
-            padding: 10px; /* Менші відступи для мобільних */
+            padding: 10px; 
             margin: 0;
         }
         h1 { font-size: 2.5rem; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
@@ -19,13 +19,12 @@
             background: #fff; 
             border-radius: 20px; 
             padding: 20px; 
-            width: 90%; /* Адаптивна ширина */
+            width: 90%; 
             max-width: 600px; 
             margin: 20px auto; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
         }
 
-        /* Кнопки меню */
         .menu-btn { 
             display: block; width: 100%; margin: 15px auto; 
             padding: 20px; border-radius: 15px; border: none; 
@@ -33,26 +32,24 @@
             cursor: pointer; 
         }
 
-        /* Стилі для рівнянь */
         #eqDisplay, #solverEq { 
-            font-size: 2.5rem; /* Оптимально для телефону */
+            font-size: 2.5rem; 
             margin: 20px 0; 
             font-weight: bold; 
             color: #2c3e50; 
-            word-wrap: break-word; /* Щоб довгі рівняння не вилазили */
+            word-wrap: break-word; 
         }
 
-        /* Поля введення */
         .input-wrap {
             display: flex;
-            flex-wrap: wrap; /* Перенос на новий рядок, якщо не влазить */
+            flex-wrap: wrap; 
             justify-content: center;
             gap: 15px;
             margin-bottom: 20px;
         }
 
         .input-field { 
-            width: 70px; 
+            width: 80px; 
             padding: 10px; 
             font-size: 1.8rem; 
             text-align: center; 
@@ -63,17 +60,16 @@
         .action-btn { 
             background-color: #ff6347; color: white; border: none; 
             padding: 15px 30px; margin: 10px; border-radius: 15px; 
-            font-size: 1.2rem; font-weight: bold; width: 80%; /* Кнопки на весь екран на моб */
+            font-size: 1.2rem; font-weight: bold; width: 80%;
         }
 
         .res { font-size: 1.8rem; margin: 15px; font-weight: bold; min-height: 1.5em; }
         label { font-size: 1.5rem; font-weight: bold; }
 
-        /* Спеціальні налаштування для великих екранів (ПК) */
         @media (min-width: 600px) {
             h1 { font-size: 3.5rem; }
             #eqDisplay, #solverEq { font-size: 3.5rem; }
-            .action-btn { width: auto; } /* На ПК кнопки звичайної ширини */
+            .action-btn { width: auto; } 
             .input-field { width: 90px; }
         }
     </style>
@@ -90,9 +86,9 @@
         <h2>Коефіцієнти:</h2>
         <div id="eqDisplay"></div>
         <div class="input-wrap">
-            <div><label>a=</label><input type="number" id="aIn" class="input-field" inputmode="decimal"></div>
-            <div><label>b=</label><input type="number" id="bIn" class="input-field" inputmode="decimal"></div>
-            <div><label>c=</label><input type="number" id="cIn" class="input-field" inputmode="decimal"></div>
+            <div><label>a=</label><input type="text" id="aIn" class="input-field" inputmode="decimal"></div>
+            <div><label>b=</label><input type="text" id="bIn" class="input-field" inputmode="decimal"></div>
+            <div><label>c=</label><input type="text" id="cIn" class="input-field" inputmode="decimal"></div>
         </div>
         <button class="action-btn" onclick="checkT()">Перевірити</button>
         <div id="resT" class="res"></div>
@@ -103,8 +99,8 @@
         <h2>Розв'яжіть:</h2>
         <div id="solverEq"></div>
         <div class="input-wrap">
-            <div><label>x₁=</label><input type="number" id="x1" class="input-field" inputmode="decimal"></div>
-            <div><label>x₂=</label><input type="number" id="x2" class="input-field" inputmode="decimal"></div>
+            <div><label>x₁=</label><input type="text" id="x1" class="input-field" inputmode="decimal"></div>
+            <div><label>x₂=</label><input type="text" id="x2" class="input-field" inputmode="decimal"></div>
         </div>
         <button class="action-btn" onclick="checkS()">Перевірити</button>
         <div id="resS" class="res"></div>
@@ -144,20 +140,18 @@
             curC = Math.floor(Math.random() * 11) - 5;
             document.getElementById('eqDisplay').innerHTML = formatEq(curA, curB, curC);
             document.getElementById('resT').innerHTML = "";
+            document.getElementById('aIn').value = "";
+            document.getElementById('bIn').value = "";
+            document.getElementById('cIn').value = "";
         }
 
         function checkT() {
-            let uA = parseFloat(document.getElementById('aIn').value);
-            let uB = parseFloat(document.getElementById('bIn').value);
-            let uC = parseFloat(document.getElementById('cIn').value);
+            let uA = parseFloat(document.getElementById('aIn').value.replace(',', '.'));
+            let uB = parseFloat(document.getElementById('bIn').value.replace(',', '.'));
+            let uC = parseFloat(document.getElementById('cIn').value.replace(',', '.'));
             if(uA === curA && uB === curB && uC === curC) {
                 document.getElementById('resT').innerHTML = "<span style='color: green;'>Правильно! ✨</span>";
-                setTimeout(() => {
-                    document.getElementById('aIn').value = "";
-                    document.getElementById('bIn').value = "";
-                    document.getElementById('cIn').value = "";
-                    genT();
-                }, 1000);
+                setTimeout(genT, 1000);
             } else {
                 document.getElementById('resT').innerHTML = "<span style='color: red;'>Помилка! ❌</span>";
             }
@@ -167,6 +161,8 @@
             let type = Math.floor(Math.random() * 2);
             curA = Math.floor(Math.random() * 4) + 1;
             document.getElementById('resS').innerHTML = "";
+            document.getElementById('x1').value = "";
+            document.getElementById('x2').value = "";
             if (type === 0) { 
                 curB = (Math.random() > 0.5 ? 1 : -1) * (curA * (Math.floor(Math.random() * 3) + 1));
                 curC = 0;
@@ -181,17 +177,13 @@
         }
 
         function checkS() {
-            let v1 = parseFloat(document.getElementById('x1').value);
-            let v2 = parseFloat(document.getElementById('x2').value);
+            let v1 = parseFloat(document.getElementById('x1').value.replace(',', '.'));
+            let v2 = parseFloat(document.getElementById('x2').value.replace(',', '.'));
             let correct = (Math.abs(v1 - sol1) < 0.1 && Math.abs(v2 - sol2) < 0.1) || 
                           (Math.abs(v1 - sol2) < 0.1 && Math.abs(v2 - sol1) < 0.1);
             if(correct) {
                 document.getElementById('resS').innerHTML = "<span style='color: green;'>Правильно! 🎉</span>";
-                setTimeout(() => {
-                    document.getElementById('x1').value = "";
-                    document.getElementById('x2').value = "";
-                    genS();
-                }, 1000);
+                setTimeout(genS, 1000);
             } else {
                 document.getElementById('resS').innerHTML = "<span style='color: red;'>Спробуй ще! ❌</span>";
             }
